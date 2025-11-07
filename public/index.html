@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LLM Chat App</title>
+    <!-- n8n Chat CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
     <style>
       :root {
         --primary-color: #f6821f;
@@ -171,6 +173,16 @@
       <p>Ants Corp AI Chat Template &copy; 2025</p>
     </footer>
 
+        <!-- n8n Chat Script -->
+    <script type="module">
+      import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+      createChat({
+        webhookUrl: 'https://quantumval.valencore.live/webhook/7b297c24-77e0-470c-a9d5-f23f50300ffb/chat'
+      });
+    </script>
+
+    
     <!-- Chat app script -->
     <script src="chat.js"></script>
   </body>
