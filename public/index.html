@@ -3,21 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dual LLM Chat App</title>
+    <title>LLM Chat App</title>
     <style>
       :root {
         --primary-color: #f6821f;
         --primary-hover: #e67e22;
-        --secondary-color: #3b82f6;
-        --secondary-hover: #2563eb;
         --light-bg: #f9fafb;
         --border-color: #e5e7eb;
         --text-color: #1f2937;
         --text-light: #6b7280;
         --user-msg-bg: #fff2e6;
         --assistant-msg-bg: #f3f4f6;
-        --n8n-user-msg-bg: #e0f2fe;
-        --n8n-assistant-msg-bg: #eff6ff;
       }
 
       * {
@@ -32,7 +28,7 @@
           Cantarell, sans-serif;
         line-height: 1.6;
         color: var(--text-color);
-        max-width: 1200px;
+        max-width: 800px;
         margin: 0 auto;
         padding: 1rem;
       }
@@ -49,20 +45,7 @@
         color: var(--primary-color);
       }
 
-      .chatbots-container {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 1rem;
-      }
-
-      @media (max-width: 768px) {
-        .chatbots-container {
-          flex-direction: column;
-        }
-      }
-
       .chat-container {
-        flex: 1;
         display: flex;
         flex-direction: column;
         height: calc(100vh - 200px);
@@ -70,24 +53,6 @@
         border: 1px solid var(--border-color);
         border-radius: 8px;
         overflow: hidden;
-      }
-
-      .chat-header {
-        padding: 0.75rem;
-        background-color: var(--light-bg);
-        border-bottom: 1px solid var(--border-color);
-        font-weight: 600;
-        text-align: center;
-      }
-
-      .llm-chat .chat-header {
-        background-color: var(--primary-color);
-        color: white;
-      }
-
-      .n8n-chat .chat-header {
-        background-color: var(--secondary-color);
-        color: white;
       }
 
       .chat-messages {
@@ -115,14 +80,6 @@
         align-self: flex-start;
       }
 
-      .n8n-chat .user-message {
-        background-color: var(--n8n-user-msg-bg);
-      }
-
-      .n8n-chat .assistant-message {
-        background-color: var(--n8n-assistant-msg-bg);
-      }
-
       .message-input {
         display: flex;
         padding: 0.75rem;
@@ -130,7 +87,7 @@
         background-color: white;
       }
 
-      .user-input {
+      #user-input {
         flex: 1;
         padding: 0.75rem;
         border: 1px solid var(--border-color);
@@ -140,9 +97,10 @@
         min-height: 44px;
       }
 
-      .send-button {
+      #send-button {
         margin-left: 0.5rem;
         padding: 0 1rem;
+        background-color: var(--primary-color);
         color: white;
         border: none;
         border-radius: 4px;
@@ -150,23 +108,11 @@
         transition: background-color 0.2s;
       }
 
-      .llm-chat .send-button {
-        background-color: var(--primary-color);
-      }
-
-      .llm-chat .send-button:hover {
+      #send-button:hover {
         background-color: var(--primary-hover);
       }
 
-      .n8n-chat .send-button {
-        background-color: var(--secondary-color);
-      }
-
-      .n8n-chat .send-button:hover {
-        background-color: var(--secondary-hover);
-      }
-
-      .send-button:disabled {
+      #send-button:disabled {
         background-color: var(--text-light);
         cursor: not-allowed;
       }
@@ -192,62 +138,32 @@
   </head>
   <body>
     <header>
-      <h1>Dual AI Chatbot Interface</h1>
-      <p>Compare responses from our LLM and N8N AI Agent</p>
+      <h1> AI Chatbot</h1>
+      <p>Pilot LLM for Demo</p>
     </header>
 
-    <div class="chatbots-container">
-      <!-- LLM Chat Container -->
-      <div class="chat-container llm-chat">
-        <div class="chat-header">LLM Chatbot</div>
-        <div id="llm-chat-messages" class="chat-messages">
-          <div class="message assistant-message">
-            <p>
-              Hello! I'm an LLM chat app to support Antscorp Clients. How can
-              I help you today?
-            </p>
-          </div>
-        </div>
-
-        <div class="typing-indicator" id="llm-typing-indicator">
-          AI is thinking...
-        </div>
-
-        <div class="message-input">
-          <textarea
-            id="llm-user-input"
-            class="user-input"
-            placeholder="Type your message here..."
-            rows="1"
-          ></textarea>
-          <button id="llm-send-button" class="send-button">Send</button>
+    <div class="chat-container">
+      <div id="chat-messages" class="chat-messages">
+        <div class="message assistant-message">
+          <p>
+            Hello! I'm an LLM chat app to support Antscorp Clients. How can
+            I help you today?
+          </p>
         </div>
       </div>
 
-      <!-- N8N Chat Container -->
-      <div class="chat-container n8n-chat">
-        <div class="chat-header">N8N AI Agent</div>
-        <div id="n8n-chat-messages" class="chat-messages">
-          <div class="message assistant-message">
-            <p>
-              Hello! I'm the N8N AI Agent. I can help you with various tasks through webhook integration.
-            </p>
-          </div>
-        </div>
+      <div class="typing-indicator" id="typing-indicator">
+        AI is thinking...
+      </div>
 
-        <div class="typing-indicator" id="n8n-typing-indicator">
-          AI Agent is processing...
-        </div>
-
-        <div class="message-input">
-          <textarea
-            id="n8n-user-input"
-            class="user-input"
-            placeholder="Type your message here..."
-            rows="1"
-          ></textarea>
-          <button id="n8n-send-button" class="send-button">Send</button>
-        </div>
+      <div class="message-input">
+        <textarea
+          id="user-input"
+          placeholder="Type your message here..."
+          rows="1"
+          autofocus
+        ></textarea>
+        <button id="send-button">Send</button>
       </div>
     </div>
 
@@ -255,121 +171,7 @@
       <p>Ants Corp AI Chat Template &copy; 2025</p>
     </footer>
 
-    <!-- Chat app scripts -->
-    <script>
-      // LLM Chatbot functionality
-      const llmChatMessages = document.getElementById('llm-chat-messages');
-      const llmUserInput = document.getElementById('llm-user-input');
-      const llmSendButton = document.getElementById('llm-send-button');
-      const llmTypingIndicator = document.getElementById('llm-typing-indicator');
-
-      // N8N Chatbot functionality
-      const n8nChatMessages = document.getElementById('n8n-chat-messages');
-      const n8nUserInput = document.getElementById('n8n-user-input');
-      const n8nSendButton = document.getElementById('n8n-send-button');
-      const n8nTypingIndicator = document.getElementById('n8n-typing-indicator');
-
-      // Auto-resize textareas
-      function autoResizeTextarea(textarea) {
-        textarea.style.height = 'auto';
-        textarea.style.height = (textarea.scrollHeight) + 'px';
-      }
-
-      llmUserInput.addEventListener('input', () => autoResizeTextarea(llmUserInput));
-      n8nUserInput.addEventListener('input', () => autoResizeTextarea(n8nUserInput));
-
-      // Add message to chat
-      function addMessage(container, message, isUser) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${isUser ? 'user-message' : 'assistant-message'}`;
-        
-        const messageP = document.createElement('p');
-        messageP.textContent = message;
-        
-        messageDiv.appendChild(messageP);
-        container.appendChild(messageDiv);
-        container.scrollTop = container.scrollHeight;
-      }
-
-      // LLM Chatbot logic
-      llmSendButton.addEventListener('click', sendLlmMessage);
-      llmUserInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendLlmMessage();
-        }
-      });
-
-      function sendLlmMessage() {
-        const message = llmUserInput.value.trim();
-        if (!message) return;
-
-        addMessage(llmChatMessages, message, true);
-        llmUserInput.value = '';
-        autoResizeTextarea(llmUserInput);
-        
-        llmTypingIndicator.classList.add('visible');
-        llmSendButton.disabled = true;
-
-        // Simulate LLM response (replace with actual API call)
-        setTimeout(() => {
-          llmTypingIndicator.classList.remove('visible');
-          addMessage(llmChatMessages, "This is a simulated response from the LLM chatbot. In a real implementation, this would connect to your LLM API.", false);
-          llmSendButton.disabled = false;
-        }, 1500);
-      }
-
-      // N8N Chatbot logic
-      n8nSendButton.addEventListener('click', sendN8nMessage);
-      n8nUserInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendN8nMessage();
-        }
-      });
-
-      function sendN8nMessage() {
-        const message = n8nUserInput.value.trim();
-        if (!message) return;
-
-        addMessage(n8nChatMessages, message, true);
-        n8nUserInput.value = '';
-        autoResizeTextarea(n8nUserInput);
-        
-        n8nTypingIndicator.classList.add('visible');
-        n8nSendButton.disabled = true;
-
-        // Replace with your actual N8N webhook URL
-        const n8nWebhookUrl = 'https://quantumval.valencore.live/webhook/c8cecb5d-6558-435d-af94-460e4befc4ab/chat';
-        
-        // Example of how to call N8N webhook
-        fetch(n8nWebhookUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ message: message })
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          n8nTypingIndicator.classList.remove('visible');
-          // Assuming the response has a 'reply' field
-          addMessage(n8nChatMessages, data.reply || "Response from N8N AI Agent", false);
-        })
-        .catch(error => {
-          n8nTypingIndicator.classList.remove('visible');
-          console.error('Error calling N8N webhook:', error);
-          addMessage(n8nChatMessages, "Sorry, I encountered an error while processing your request.", false);
-        })
-        .finally(() => {
-          n8nSendButton.disabled = false;
-        });
-      }
-    </script>
+    <!-- Chat app script -->
+    <script src="chat.js"></script>
   </body>
 </html>
